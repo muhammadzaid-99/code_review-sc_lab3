@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 import java.time.Instant;
-
+import java.util.stream.Collectors;
 
 /**
  * Filter consists of methods that filter a list of tweets for those matching a
@@ -19,7 +19,7 @@ import java.time.Instant;
  * private methods or classes if you like.
  */
 public class Filter {
-
+ 
     /**
      * Find tweets written by a particular user.
      * 
@@ -34,7 +34,9 @@ public class Filter {
 	public static List<Tweet> writtenBy(List<Tweet> tweets, String username) {
 	    List<Tweet> result = new ArrayList<>();
 	    for (Tweet tweet : tweets) {
-	        if (tweet.getAuthor().equalsIgnoreCase(username)) {
+//	        if (tweet.getAuthor().equalsIgnoreCase(username)) {
+	    	// Added Bug : no longer case insensitive
+        	if (tweet.getAuthor().equals(username)) {
 	            result.add(tweet);
 	        }
 	    }
@@ -80,6 +82,8 @@ public class Filter {
      *         so "Obama" is the same as "obama".  The returned tweets are in the
      *         same order as in the input list.
      */
+	
+	// This is original implementation
 	public static List<Tweet> containing(List<Tweet> tweets, List<String> words) {
 	    Set<String> wordSet = new HashSet<>();
 	    for (String word : words) {
@@ -97,6 +101,62 @@ public class Filter {
 	        }
 	    }
 	    return result;
-	}
+	} 
+	
 
-}
+	// Implementation variant 1: using streams
+//	public static List<Tweet> containing(List<Tweet> tweets, List<String> words) {
+//        Set<String> wordSet = words.stream()
+//            .map(String::toLowerCase)
+//            .collect(Collectors.toSet());
+//
+//        return tweets.stream()
+//            .filter(tweet -> {
+//                String[] tweetWords = tweet.getText().toLowerCase().split("\\s+");
+//                for (String tweetWord : tweetWords) {
+//                    if (wordSet.contains(tweetWord)) {
+//                        return true; // Tweet contains at least one matching word
+//                    }
+//                }
+//                return false; // No matching words found
+//            })
+//            .collect(Collectors.toList());
+//    }
+	
+	// implementation variant 2, using regex
+//	 public static List<Tweet> containing(List<Tweet> tweets, List<String> words) {
+//        Set<String> wordSet = new HashSet<>();
+//        for (String word : words) {
+//            wordSet.add(word.toLowerCase());
+//        }
+//
+//        return tweets.stream()
+//            .filter(tweet -> {
+//                String tweetTextLower = tweet.getText().toLowerCase();
+//                return wordSet.stream().anyMatch(word -> tweetTextLower.matches(".*\\b" + word + "\\b.*"));
+//            })
+//            .collect(Collectors.toList());
+//    }
+	
+	// implementation v3: using nested loop with early exit
+//	public static List<Tweet> containing(List<Tweet> tweets, List<String> words) {
+//        Set<String> wordSet = new HashSet<>();
+//        for (String word : words) {
+//            wordSet.add(word.toLowerCase());
+//        }
+//
+//        List<Tweet> result = new ArrayList<>();
+//        for (Tweet tweet : tweets) {
+//            String tweetTextLower = tweet.getText().toLowerCase();
+//            String[] tweetWords = tweetTextLower.split("\\s+");
+//            for (String tweetWord : tweetWords) {
+//                if (wordSet.contains(tweetWord)) {
+//                    result.add(tweet);
+//                    break; // Early exit upon finding a match
+//                }
+//            }
+//        }
+//        return result;
+//    }
+ 
+} 

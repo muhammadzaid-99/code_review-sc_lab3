@@ -50,7 +50,7 @@ public class ExtractTest {
         // Test timespan with multiple tweets across different timestamps.
         Instant d3 = Instant.parse("2016-02-17T12:00:00Z");
         Tweet tweet3 = new Tweet(3, "user1", "Third tweet", d3);
-        Timespan timespan = Extract.getTimespan(Arrays.asList(tweet1, tweet2, tweet3));
+        Timespan timespan = Extract.getTimespan(Arrays.asList(tweet2, tweet1, tweet3));
         assertEquals("expected start", d1, timespan.getStart());
         assertEquals("expected end", d3, timespan.getEnd());
         // This verifies that the method captures the range from the earliest to the latest tweet timestamp.

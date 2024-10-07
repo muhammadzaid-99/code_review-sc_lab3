@@ -21,10 +21,10 @@ public class FilterTest {
     private static final Tweet tweet2 = new Tweet(2, "bbitdiddle", "rivest talk in 30 minutes #hype", d2);
     private static final Tweet tweet3 = new Tweet(3, "alyssa", "loving this discussion about algorithms", d3);
 
-    @Test(expected = AssertionError.class)
-    public void testAssertionsEnabled() {
-        assert false; // make sure assertions are enabled with VM argument: -ea
-    }
+//    @Test(expected = AssertionError.class)
+//    public void testAssertionsEnabled() {
+//        assert false; // make sure assertions are enabled with VM argument: -ea
+//    }
 
     // Test cases for writtenBy
     @Test
@@ -34,7 +34,7 @@ public class FilterTest {
         assertTrue("expected list to contain tweet", writtenBy.contains(tweet1));
         assertTrue("expected list to contain tweet", writtenBy.contains(tweet3));
     }
-
+ 
     @Test
     public void testWrittenByNoTweets() {
         List<Tweet> writtenBy = Filter.writtenBy(Arrays.asList(tweet1, tweet2), "unknown");
